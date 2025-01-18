@@ -1,3 +1,4 @@
+# 4
 # solution 1
 class Solution(object):
     def longestCommonPrefix(self, strs):
