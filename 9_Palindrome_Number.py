@@ -5,6 +5,7 @@ class Solution(object):
 
         :type x: int
         :rtype: bool
+        
         """
         x_list = list(map(str, str(x)))
         rtype = True
