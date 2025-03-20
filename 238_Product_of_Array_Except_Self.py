@@ -1,5 +1,6 @@
 class Solution:
     def productExceptSelf(self, nums: List[int]) -> List[int]:
+        # clear
         mul = 1
         res = []
         zero_num = nums.count(0)
