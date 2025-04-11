@@ -1,0 +1,45 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def longestZigZag(self, root: Optional[TreeNode]) -> int:
+        self.result = 0
+        def zigzag(root, direction, curr):
+            self.result = max(self.result, curr)
+            if not root.left and not root.right:
+                return
+            if direction:
+                if root.left:
+                    zigzag(root.left, False, curr + 1)
+                if root.right:
+                    zigzag(root.right, True, 1)
+            else:
+                if root.right:
+                    zigzag(root.right, True, curr+1)
+                if root.left:
+                    zigzag(root.left, False, 1)
+
+        if root.left:
+            zigzag(root.left, False, 1)
+            
+        if root.right:
+            zigzag(root.right, True, 1)
+
+        return self.result
+
+    #     self.maxlen = 0
+
+    #     def dfs(node, left, right):
+    #         self.maxlen = max(self.maxlen, left, right)
+
+    #         if node.left:
+    #             dfs(node.left, right + 1, 0)
+            
+    #         if node.right:
+    #             dfs(node.right, 0, left + 1)
+            
+    #     dfs(root, 0, 0)
+    #     return self.maxlen
