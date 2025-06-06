@@ -1,34 +1,32 @@
-from collections import Counter
+from collections import defaultdict
 
-def find_the_best_team(rank):
-    cnt = Counter(rank)
-    
-    # 자격 있는 팀들 (6명 이상)
-    team_set = set(team for team in cnt if cnt[team] >= 6)
-    
-    team_scores = {team: [] for team in team_set}
-    
-    # 등수는 1부터 시작
+def find_best_team(rank):
+    team_counts = defaultdict(int)
+    for team in rank:
+        team_counts[team] += 1
+
+    valid_teams = {team for team, count in team_counts.items() if count == 6}
+
+    team_scores = defaultdict(list)
     score = 1
-    for player in rank:
-        if player in team_set:
-            team_scores[player].append(score)
-        score += 1
+    for team in rank:
+        if team in valid_teams:
+            team_scores[team].append(score)
+            score += 1
 
-    result = {}
-    for team in team_set:
-        # 상위 4명 점수 합산
-        total_score = sum(team_scores[team][:4])
-        fifth_score = team_scores[team][4]  # 5번째 선수 점수 (tie-breaker용)
-        result[team] = (total_score, fifth_score)
-    
-    # 점수 합산 → tie-break → 팀 번호 순
-    best_team = min(result.items(), key=lambda x: (x[1][0], x[1][1], x[0]))[0]
-    return best_team
+    result = []
+    for team in valid_teams:
+        scores = team_scores[team]
+        total = sum(scores[:4])
+        fifth = scores[4]
+        result.append((total, fifth, team))
+
+    result.sort()
+    return result[0][2]
 
 # 입력 처리
-case_num = int(input())
-for _ in range(case_num):
-    n = int(input())
+T = int(input())
+for _ in range(T):
+    N = int(input())
     rank = list(map(int, input().split()))
-    print(find_the_best_team(rank))
+    print(find_best_team(rank))
